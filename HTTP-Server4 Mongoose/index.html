@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Authentication App</h1>
+        <div id="message"></div>
+
+        <!-- Sign Up Form -->
+        <h2>Sign Up</h2>
+        <form id="signup-form">
+            <label for="signup-username">Username:</label>
+            <input type="text" id="signup-username" name="username" required>
+            <br>
+            <label for="signup-password">Password:</label>
+            <input type="password" id="signup-password" name="password" required>
+            <br>
+            <label for="signup-name">Name:</label>
+            <input type="text" id="signup-name" name="name">
+            <br>
+            <button type="submit">Sign Up</button>
+        </form>
+
+        <!-- Sign In Form -->
+        <h2>Sign In</h2>
+        <form id="signin-form">
+            <label for="signin-username">Username:</label>
+            <input type="text" id="signin-username" name="username" required>
+            <br>
+            <label for="signin-password">Password:</label>
+            <input type="password" id="signin-password" name="password" required>
+            <br>
+            <button type="submit">Sign In</button>
+        </form>
+
+        <!-- User List -->
+        <h2>Users List</h2>
+        <ul id="users-list"></ul>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const baseURL = "http://localhost:3000"; // Your backend server URL
+
+    const signupForm = document.getElementById("signup-form");
+    const signinForm = document.getElementById("signin-form");
+    const usersList = document.getElementById("users-list");
+    const messageBox = document.getElementById("message");
+
+    function showMessage(msg, type = "success") {
+      messageBox.textContent = msg;
+      messageBox.className = `message ${type}`;
+      setTimeout(() => {
+        messageBox.textContent = "";
+        messageBox.className = "";
+      }, 3000);
+    }
+
+    async function fetchUsers(token) {
+      try {
+        const response = await axios.get(`${baseURL}/users`, {
+          headers: { Authorization: token }
+        });
+        const users = response.data;
+        usersList.innerHTML = users.map(user => `<li>${user.name} (${user.username})</li>`).join("");
+      } catch (error) {
+        console.error(error);
+        showMessage("Failed to fetch users.", "error");
+      }
+    }
+
+    signupForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(signupForm);
+      const username = formData.get("username");
+      const password = formData.get("password");
+      const name = formData.get("name");
+
+      try {
+        const response = await axios.post(`${baseURL}/signin`, { username, password, name }, {
+          headers: { 'Content-Type': 'application/json' } // Ensure correct content type
+        });
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+        showMessage("Signed up successfully!", "success");
+        fetchUsers(token);
+      } catch (error) {
+        console.error(error);
+        showMessage("Failed to sign up.", "error");
+      }
+    });
+
+    signinForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const formData = new FormData(signinForm);
+      const username = formData.get("username");
+      const password = formData.get("password");
+
+      try {
+        const response = await axios.post(`${baseURL}/signin`, { username, password }, {
+          headers: { 'Content-Type': 'application/json' } // Ensure correct content type
+        });
+        const { token } = response.data;
+        localStorage.setItem("token", token);
+        showMessage("Signed in successfully!", "success");
+        fetchUsers(token);
+      } catch (error) {
+        console.error(error);
+        showMessage("Failed to sign in.", "error");
+      }
+    });
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchUsers(token);
+    }
+  });
+</script>
+
+
+</body>
+
+</html>
