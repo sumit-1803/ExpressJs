@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { toast } from 'react-toastify';
+
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,11 +25,10 @@ const Register = () => {
       const res = await api.post('/auth/register', formData);
       const token = res.data.token; // Assuming the backend returns a token
       login(token); // Store the token in the AuthContext and local storage
-      alert('Registration successful');
+      toast.success('Registeration successful ... Please Login');
       navigate('/login'); // Redirect to home page or any other page
     } catch (err) {
       console.error(err.response.data);
-      alert('Registration failed: ' + err.response.data.msg);
     }
   };
 
