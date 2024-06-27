@@ -1,0 +1,2 @@
+beautified register , home , login 
+successful navigation from reg to login to home 

@@ -1,0 +1,16 @@
+├── config/
+│   └── db.js
+├── controllers/
+│   ├── authController.js
+│   ├── courseController.js
+├── middlewares/
+│   ├── authMiddleware.js
+├── models/
+│   ├── Course.js
+│   └── User.js
+├── routes/
+│   ├── authRoutes.js
+│   ├── courseRoutes.js
+├── .env
+├── package.json
+├── server.js

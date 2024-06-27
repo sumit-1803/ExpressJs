@@ -3,7 +3,7 @@ const router = express.Router();
 const { getCourses, createCourse, updateCourse, deleteCourse } = require('../controllers/courseController');
 const { auth, adminAuth } = require('../middlewares/authMiddleware');
 
-router.get('/', auth, getCourses);
+router.get('/',  getCourses);
 router.post('/', adminAuth, createCourse);
 router.put('/:id', adminAuth, updateCourse);
 router.delete('/:id', adminAuth, deleteCourse);

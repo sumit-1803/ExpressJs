@@ -8,7 +8,7 @@ import AdminDashboard from './pages/AdminDashboard';
 const App = () => {
   return (
     <Router>
-      <div>
+      <div className='font-mono'>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/register" element={<Register />} />
