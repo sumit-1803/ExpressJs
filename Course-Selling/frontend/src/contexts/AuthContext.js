@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import api, { setAuthToken } from '../api';
+import { jwtDecode } from 'jwt-decode';
 
 // Create the AuthContext
 const AuthContext = createContext();
@@ -11,39 +11,41 @@ export const useAuth = () => useContext(AuthContext);
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [user, setUser] = useState(null);
 
   // Function to handle login
-  const login = async (formData) => {
-    try {
-      const res = await api.post('/auth/login', formData);
-      const newToken = res.data.token;
-      setAuthToken(newToken); // Set token for API requests
-      localStorage.setItem('token', newToken); // Store token in local storage
-      setToken(newToken); // Set token in state
-      setIsAuthenticated(true); // Set authentication state to true
-      return true; // Return true on successful login
-    } catch (err) {
-      console.error('Login failed:', err.response.data);
-      return false; // Return false if login fails
-    }
+  const login = (newToken) => {
+    localStorage.setItem('token', newToken);
+    setToken(newToken);
+    setIsAuthenticated(true);
+    const decoded = jwtDecode(newToken);
+    console.log('Decoded User:', decoded.user); // Log decoded user
+    setUser(decoded.user);
   };
+  
 
   // Function to handle logout
   const logout = () => {
-    localStorage.removeItem('token'); // Remove token from local storage
-    setToken(null); // Clear token in state
-    setIsAuthenticated(false); // Set authentication state to false
+    localStorage.removeItem('token');
+    setToken(null);
+    setIsAuthenticated(false);
+    setUser(null); // Clear user data on logout
   };
 
   // Effect to check token on load
   useEffect(() => {
     if (token) {
       setIsAuthenticated(true);
+      const decoded = jwtDecode(token);
+      setUser(decoded.user); // Initialize user data from token on app load
+    } else {
+      setIsAuthenticated(false);
+      setUser(null);
     }
   }, [token]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );

@@ -2,7 +2,7 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
-
+// Register a new user
 exports.register = async (req, res) => {
     const { name, email, password, role } = req.body;
 
@@ -24,14 +24,16 @@ exports.register = async (req, res) => {
 
         await user.save();
 
+        // Generate JWT token
         const payload = {
             user: {
                 id: user.id,
+                username: user.name,
                 role: user.role
             }
         };
 
-        jwt.sign(payload, process.env.JWT_SECRET, (err, token) => {
+        jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
             if (err) throw err;
             res.json({ token });
         });
@@ -41,6 +43,7 @@ exports.register = async (req, res) => {
     }
 };
 
+// Login existing user
 exports.login = async (req, res) => {
     const { email, password } = req.body;
 
@@ -55,9 +58,11 @@ exports.login = async (req, res) => {
             return res.status(400).json({ msg: 'Invalid Credentials' });
         }
 
+        // Generate JWT token
         const payload = {
             user: {
                 id: user.id,
+                username: user.name,
                 role: user.role
             }
         };

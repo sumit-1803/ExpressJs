@@ -1,0 +1,15 @@
+Progress 
+- beautified register , home , login 
+- successful navigation from reg to login to home 
+- username is used to greet user after login 
+
+
+Fixed
+- User email not availiable to greet after login 
+
+
+
+
+To Fix
+- add css 
+- move logo/banner to top left and log in buttons to right top 

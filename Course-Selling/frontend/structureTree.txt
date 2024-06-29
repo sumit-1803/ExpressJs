@@ -1,0 +1,37 @@
+my-mern-project/
+├── public/
+│   ├── index.html
+│   └── manifest.json
+├── src/
+│   ├──── api.js
+│   |
+│   │   
+│   ├── App.css 
+│   │   
+│   │      
+│   ├── components/
+│   │   ├── CourseList.js
+│   │   ├── Login.js
+│   │   ├── Register.js
+│   │   └── Navbar.js
+│   ├── contexts/
+│   │   └── AuthContext.js
+│   ├── pages/
+│   │   ├── Home.js
+│   │   ├── 
+│   │   ├── CourseDetail.js
+│   │   └── AdminDashboard.js
+│   ├── App.js
+│   ├── index.js
+│   ├── 
+│   │   
+│   ├── 
+│   │   
+│   └── index.css
+├── tailwind.config.js
+├── postcss.config.js
+├── package.json
+└── README.md
+└── vite.config.js
+└── .env
+└── .gitignore
