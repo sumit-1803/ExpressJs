@@ -1,52 +1,69 @@
+// AuthContext.js (or equivalent)
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
 
-// Create the AuthContext
 const AuthContext = createContext();
 
-// Custom hook to use the AuthContext
-export const useAuth = () => useContext(AuthContext);
-
-// AuthProvider component to wrap around the app
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [token, setToken] = useState(localStorage.getItem('token'));
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Function to handle login
-  const login = (newToken) => {
-    localStorage.setItem('token', newToken);
-    setToken(newToken);
-    setIsAuthenticated(true);
-    const decoded = jwtDecode(newToken);
-    console.log('Decoded User:', decoded.user); // Log decoded user
-    setUser(decoded.user);
-  };
-  
+  // Function to fetch user profile based on stored token
+  const fetchUserProfile = async (token) => {
+    try {
+      // Decode JWT token to extract user information
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(function (c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+          })
+          .join('')
+      );
+      const { user } = JSON.parse(jsonPayload);
 
-  // Function to handle logout
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setIsAuthenticated(false);
-    setUser(null); // Clear user data on logout
-  };
-
-  // Effect to check token on load
-  useEffect(() => {
-    if (token) {
+      setUser(user);
       setIsAuthenticated(true);
-      const decoded = jwtDecode(token);
-      setUser(decoded.user); // Initialize user data from token on app load
+    } catch (error) {
+      console.error('Error decoding or setting user profile:', error);
+      setIsAuthenticated(false);
+      setUser(null);
+      localStorage.removeItem('authToken'); // Clear invalid token from local storage
+      navigate('/login'); // Redirect to login if token is invalid
+    }
+  };
+
+  useEffect(() => {
+    // Check local storage for token
+    const token = localStorage.getItem('token');
+    if (token) {
+      fetchUserProfile(token); // Call fetchUserProfile if token exists
     } else {
       setIsAuthenticated(false);
       setUser(null);
     }
-  }, [token]);
+  }, [navigate]);
+
+  const login = (token) => {
+    localStorage.setItem('authToken', token);
+    fetchUserProfile(token); // Call fetchUserProfile after setting token
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    setIsAuthenticated(false);
+    setUser(null);
+    navigate('/');
+  };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);

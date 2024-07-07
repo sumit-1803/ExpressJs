@@ -8,6 +8,7 @@ const Home = () => {
   const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
+
   const handleLogout = () => {
     logout();
     toast.info('Logged out successfully');
@@ -18,9 +19,9 @@ const Home = () => {
     <div className="min-h-screen bg-gradient-to-r from-amber-200 to-yellow-500">
       <div className="container mx-auto px-4 py-8">
         <div className="text-center flex justify-between">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">KnowledgeHub</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4 drop-shadow-xl rounded-2xl bg-[#fff]">KnowledgeHub</h1>
           <div className="flex justify-center items-center mb-4">
-            {isAuthenticated ? (
+            {isAuthenticated && user ? (
               <div className="flex items-center">
                 <p className="mr-4 text-gray-800">Hello, {user.username}</p>
                 <button

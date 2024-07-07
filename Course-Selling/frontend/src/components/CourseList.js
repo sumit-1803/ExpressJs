@@ -18,7 +18,7 @@ const CourseList = () => {
   }, []);
 
   return (
-    <div className="container  h-[100vh] mx-auto px-4 mt-8">
+    <div className="container h-screen mx-auto px-4 mt-8">
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {courses.map(course => (
           <div key={course._id} className="rounded-lg overflow-hidden shadow-md hover:shadow-2xl bg-gray-200">
@@ -26,7 +26,7 @@ const CourseList = () => {
               <h2 className="text-lg font-bold text-gray-800 mb-2">{course.title}</h2>
               <p className="text-sm text-gray-600 mb-2">{course.description}</p>
               <div className="flex justify-between items-center">
-                <p className="text-gray-700">${course.price}</p>
+                <p className="text-yellow-700 ">${course.price}</p>
                 <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
                   Enroll
                 </button>

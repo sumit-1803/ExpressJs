@@ -23,20 +23,27 @@ const Login = () => {
       const token = res.data.token;
       setAuthToken(token);
       localStorage.setItem('token', token);
-      toast.success('Login successful ... Please reload once to reflect');
-      console.log('Logged in successfully');
+      toast.success('Login Successful!!');
+      console.log('Logged In Successfully');
       navigate('/'); // Redirect to home or dashboard
     } catch (err) {
-      console.error(err.response.data);
+      console.error('Error details:', err);
+      if (err.response) {
+        console.error('Response error data:', err.response.data);
+      } else if (err.request) {
+        console.error('Request made but no response received', err.request);
+      } else {
+        console.error('Error setting up request:', err.message);
+      }
       toast.error('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div className="min-h-screen  bg-gradient-to-r from-amber-200 to-yellow-500 flex justify-center items-center">
+    <div className="min-h-screen bg-gradient-to-r from-amber-200 to-yellow-500 flex justify-center items-center">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 text-center mt-8 mb-4">Login</h1>
-        <form onSubmit={onSubmit} className="max-w-md mx-auto  bg-white p-8 rounded-lg shadow-gray-950 shadow-2xl">
+        <form onSubmit={onSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-gray-950 shadow-2xl">
           <input
             type="email"
             name="email"

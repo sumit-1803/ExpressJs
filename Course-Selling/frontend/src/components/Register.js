@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../api';
+import api, { setAuthToken } from '../api.js';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -33,8 +33,7 @@ const Register = () => {
     <div className="min-h-screen bg-gradient-to-r from-amber-200 to-yellow-500 flex justify-center items-center">
       <div className="container mx-auto">
         <h1 className="text-3xl font-bold text-gray-800 text-center mt-8 mb-4">Register</h1>
-        <form onSubmit={onSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg  shadow-gray-950 
-            shadow-2xl">
+        <form onSubmit={onSubmit} className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-gray-950 shadow-2xl">
           <input
             type="text"
             name="name"
@@ -64,7 +63,7 @@ const Register = () => {
           />
           <button
             type="submit"
-            className="w-full bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-4 rounded-md "
+            className="w-full bg-yellow-500 hover:bg-yellow-700 text-black font-bold py-2 px-4 rounded-md"
           >
             Register
           </button>
