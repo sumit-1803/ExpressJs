@@ -1,8 +1,7 @@
-# React + Vite
+Website hosted here 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+This shows a logic for filtered rendering of sentences using input box and useMemo hook 
+This project is deployed on Netlify. You can access the live version of the application using the following link:
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Live Demo](https://thriving-sfogliatella-8c2257.netlify.app)
