@@ -1,12 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import CourseList from '../components/CourseList';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
-
-// create a navbar component
-const Navbar = () => {
-    const { isAuthenticated, logout, user } = useAuth();
+const Home = () => {
+  const { isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
 
 
@@ -16,8 +15,9 @@ const Navbar = () => {
     navigate('/');
   };
 
-    return (
-        <div className="container mx-auto px-4 py-8">
+  return (
+    <div className="min-h-screen bg-gradient-to-r from-amber-200 to-yellow-500">
+      <div className="container mx-auto px-4 py-8">
         <div className="text-center flex justify-between">
           <h1 className="text-3xl font-bold text-gray-800 mb-4 drop-shadow-xl rounded-2xl bg-[#fff]">KnowledgeHub</h1>
           <div className="flex justify-center items-center mb-4">
@@ -49,8 +49,12 @@ const Navbar = () => {
             )}
           </div>
         </div>
+        <div className="flex flex-col items-center mt-8">
+          <CourseList />
+        </div>
       </div>
-    );
+    </div>
+  );
 };
 
-export default Navbar;
+export default Home;
